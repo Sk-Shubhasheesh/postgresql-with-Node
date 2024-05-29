@@ -37,9 +37,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // Create a function that let’s you insert data into a table. Make it async, make sure client.connect resolves before u do the insert
-const pg_1 = require("pg");
+/*
+import { Client } from 'pg';
+
 // Async function to insert data into a table
-function insertData() {
+async function insertData() {
+  const client = new Client({
+    host: 'localhost',
+    port: 5432,
+    database: 'postgres',
+    user: 'postgres',
+    password: 'user',
+  });
+
+  try {
+    await client.connect(); // Ensure client connection is established
+    const insertQuery = "INSERT INTO users (username, email, password) VALUES ('username2', 'user3@example.com', 'user_password');";
+    const res = await client.query(insertQuery);
+    console.log('Insertion success:', res); // Output insertion result
+  } catch (err) {
+    console.error('Error during the insertion:', err);
+  } finally {
+    await client.end(); // Close the client connection
+  }
+}
+
+insertData();
+
+*/
+// Write a function getUser that lets you fetch data from the database given a email as input.
+const pg_1 = require("pg");
+// Async function to fetch user data from the database given an email
+function getUser(email) {
     return __awaiter(this, void 0, void 0, function* () {
         const client = new pg_1.Client({
             host: 'localhost',
@@ -50,16 +79,26 @@ function insertData() {
         });
         try {
             yield client.connect(); // Ensure client connection is established
-            const insertQuery = "INSERT INTO users (username, email, password) VALUES ('username2', 'user3@example.com', 'user_password');";
-            const res = yield client.query(insertQuery);
-            console.log('Insertion success:', res); // Output insertion result
+            const query = 'SELECT * FROM users WHERE email = $1';
+            const values = [email];
+            const result = yield client.query(query, values);
+            if (result.rows.length > 0) {
+                console.log('User found:', result.rows[0]); // Output user data
+                return result.rows[0]; // Return the user data
+            }
+            else {
+                console.log('No user found with the given email.');
+                return null; // Return null if no user was found
+            }
         }
         catch (err) {
-            console.error('Error during the insertion:', err);
+            console.error('Error during fetching user:', err);
+            throw err; // Rethrow or handle error appropriately
         }
         finally {
             yield client.end(); // Close the client connection
         }
     });
 }
-insertData();
+// Example usage
+getUser('user3@example.com').catch(console.error);
