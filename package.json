@@ -1,0 +1,16 @@
+{
+  "name": "postgresql-with-node",
+  "version": "1.0.0",
+  "description": "* There are a few types of databases, all service different types of use-cases -\r ## 1. NoSQL databases \r * Store data in a schema-less fashion. Extremely lean and fast way to store data. \r * Examples - MongoDB, \r ![alt text](<README IMG/nosql.png>)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/pg": "^8.11.6",
+    "pg": "^8.11.5"
+  }
+}
